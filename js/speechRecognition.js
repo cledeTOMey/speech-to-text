@@ -2,7 +2,7 @@
  * Speech Recognition with microphone stream
  * @requires sox see http://sox.sourceforge.net/
  * sudo apt-get install sox
- * @requires auth set google api key as a global variable
+ * @requires auth set google api credentials as a global variable
  * export GOOGLE_APPLICATION_CREDENTIALS="absolute_path/voice.json"
  * @module
  */
@@ -52,7 +52,7 @@ const speechRecognition = ({ encoding, sampleRateHertz, languageCode }, onRecogn
         .stream()
         .on('error', console.error)
         .pipe(recognizeStream);
-        
+
     // [END micStreamRecognize]
 }
 
