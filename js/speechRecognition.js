@@ -52,8 +52,7 @@ const speechRecognition = ({ encoding, sampleRateHertz, languageCode }, onRecogn
         .stream()
         .on('error', console.error)
         .pipe(recognizeStream);
-
-    console.log('Listening, press Ctrl+C to stop.');
+        
     // [END micStreamRecognize]
 }
 
