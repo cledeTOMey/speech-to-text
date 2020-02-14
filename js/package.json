@@ -11,6 +11,10 @@
   "license": "ISC",
   "dependencies": {
     "@google-cloud/speech": "^3.6.0",
+    "aedes": "^0.40.1",
     "node-record-lpcm16": "^1.0.1"
+  },
+  "devDependencies": {
+    "mqtt": "^3.0.0"
   }
 }

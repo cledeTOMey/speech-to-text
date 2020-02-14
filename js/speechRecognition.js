@@ -1,8 +1,8 @@
 /**
- * Speech Recognization with microphone stream
+ * Speech Recognition with microphone stream
  * @requires sox see http://sox.sourceforge.net/
  * sudo apt-get install sox
- * @requires auth google api key
+ * @requires auth set google api key as a global variable
  * export GOOGLE_APPLICATION_CREDENTIALS="absolute_path/voice.json"
  * @module
  */
@@ -11,22 +11,28 @@ const recorder = require('node-record-lpcm16')
 const speech = require('@google-cloud/speech')
 
 /**
- * 
- * @param {*} encoding 
- * @param {*} sampleRateHertz 
- * @param {*} languageCode 
+ * capture microphone stream and use google speech api to convert it to text
+ * @param {String} encoding - encoding of audio corresponding to audio input device
+ * example : "LINEAR16"
+ * @param {Number} sampleRateHertz - rate on Hz of audio sample
+ * example : 16000, 48000
+ * @param {String} languageCode - target language of recognition
+ * example : "fr-FR", ""
+ * @param {(data: Object): void} onRecognized - event listener that fires each time the
+ * recognition stream returns a data
+ * String result of recognition : data.results[0].alternatives[0].transcript
  */
-const speechRecognize = ({ encoding, sampleRateHertz, languageCode }, onRecognized) => {
+const speechRecognition = ({ encoding, sampleRateHertz, languageCode }, onRecognized) => {
 
-
+    // configure request
     const request = {
         config: {
             encoding, sampleRateHertz, languageCode
         },
-        interimResults: false, //Get interim results from stream
+        interimResults: false, // get the final result for each request
     };
 
-    // Creates a client
+    // init api client
     const client = new speech.SpeechClient();
 
     // Create a recognize stream
@@ -38,7 +44,7 @@ const speechRecognize = ({ encoding, sampleRateHertz, languageCode }, onRecogniz
     // Start recording and send the microphone input to the Speech API
     recorder
         .record({
-            sampleRateHertz: sampleRateHertz,
+            sampleRateHertz,
             threshold: 0, //silence threshold
             recordProgram: 'rec', // Try also "arecord" or "sox"
             silence: '5.0', //seconds of silence before ending
@@ -51,14 +57,4 @@ const speechRecognize = ({ encoding, sampleRateHertz, languageCode }, onRecogniz
     // [END micStreamRecognize]
 }
 
-speechRecognize({
-    encoding: "LINEAR16",
-    sampleRateHertz: 16000,
-    languageCode: "fr-FR"
-}, data => {
-    process.stdout.write(
-        data.results[0] && data.results[0].alternatives[0]
-            ? `Transcription: ${data.results[0].alternatives[0].transcript}\n`
-            : `\n\nReached transcription time limit, press Ctrl+C\n`
-    )
-})
+module.exports = speechRecognition
