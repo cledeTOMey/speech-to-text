@@ -16,7 +16,7 @@ const speech = require('@google-cloud/speech')
  * @param {*} sampleRateHertz 
  * @param {*} languageCode 
  */
-const speechRecognize = ({encoding, sampleRateHertz, languageCode}) => {
+const speechRecognize = ({ encoding, sampleRateHertz, languageCode }, onRecognized) => {
 
 
     const request = {
@@ -33,13 +33,7 @@ const speechRecognize = ({encoding, sampleRateHertz, languageCode}) => {
     const recognizeStream = client
         .streamingRecognize(request)
         .on('error', console.error)
-        .on('data', data =>
-            process.stdout.write(
-                data.results[0] && data.results[0].alternatives[0]
-                    ? `Transcription: ${data.results[0].alternatives[0].transcript}\n`
-                    : `\n\nReached transcription time limit, press Ctrl+C\n`
-            )
-        );
+        .on('data', onRecognized);
 
     // Start recording and send the microphone input to the Speech API
     recorder
@@ -61,4 +55,10 @@ speechRecognize({
     encoding: "LINEAR16",
     sampleRateHertz: 16000,
     languageCode: "fr-FR"
+}, data => {
+    process.stdout.write(
+        data.results[0] && data.results[0].alternatives[0]
+            ? `Transcription: ${data.results[0].alternatives[0].transcript}\n`
+            : `\n\nReached transcription time limit, press Ctrl+C\n`
+    )
 })
