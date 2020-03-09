@@ -54,9 +54,9 @@ class textTraitment():
         if "home" in text:
             self.sentence = "retour accueil"
             self.order = "accueil"
-        if "turn on light" in text:
+        if "turn on light" in text or "turn on lights" in text:
             self.sentence = "allumage de la lumiere"
-            self.floors(text, "lumiere")
+            self.floors(text, "allumer")
         if "spray" in text:
             self.sentence = "arrosage"
             self.floors(text, "arroser")
