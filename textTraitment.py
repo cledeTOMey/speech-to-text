@@ -57,6 +57,9 @@ class textTraitment():
         if "turn on light" in text or "turn on lights" in text:
             self.sentence = "allumage de la lumiere"
             self.floors(text, "allumer")
+        if "turn of light" in text or "turn of lights" in text:
+            self.sentence="arreter eclairage"
+            self.order= "arreter eclairage"
         if "spray" in text:
             self.sentence = "arrosage"
             self.floors(text, "arroser")
