@@ -1,0 +1,22 @@
+{
+  "name": "tmp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "node mqttServer.js",
+    "client": "node mqttClient.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@google-cloud/speech": "^3.6.0",
+    "aedes": "^0.40.1",
+    "node-record-lpcm16": "^1.0.1"
+  },
+  "devDependencies": {
+    "mqtt": "^3.0.0"
+  }
+}
