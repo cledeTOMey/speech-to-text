@@ -60,11 +60,11 @@ class textTraitment():
         if "spray" in text:
             self.sentence = "arrosage"
             self.floors(text, "arroser")
-        if "temperature" in text:
-            if not "history" in text:
-                self.order = "temperature"
-        if "display stat" in text:
-            self.order = "afficher statistiques"
+        if "display" in text:
+            if "stat" in text:
+                self.order = "afficher statistiques"
+            else:
+                self.floors(text, "afficher")
         if "history" in text:
             if "temperature" in text:
                 self.sentence = "historique temperature"
@@ -85,7 +85,8 @@ class textTraitment():
         print(self.sentence)
         print("order :")
         print(self.order)
-        self.mqtt.publish(self.order)
+        if (self.order != ""):
+            self.mqtt.publish(self.order)
         self.order = ""
         self.sentence = ""
 
