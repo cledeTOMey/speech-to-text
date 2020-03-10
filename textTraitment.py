@@ -2,15 +2,15 @@ import paho.mqtt.client as mqtt
 
 
 class textTraitment():
-    def __init__(self, mqttClient):
+    def __init__(self):
         #orderTreatment init
-        self.sentence = ""
-        self.order=""
+        self.sentence = "" #phrase deduite
+        self.order="" # ordre deduit
 
-        # mqtt init
-        self.mqtt = mqttClient
 
     def testEtage(self, floor, text):
+        # fonction qui regarde quel etage est demande (3 valeurs differentes par etage en fonction de la reconnaissance vocale et de la tournure de phrase)
+        # la fonction renvoie faux si aucun numero d'etage a ete soumis.
         if floor == 1:
             if ("1" in text) or ("one" in text) or ("first" in text):
                 return True
@@ -23,6 +23,7 @@ class textTraitment():
         return False
 
     def floors(self, text, prefix):
+        # drapeau pour verifier la derniere condition
         flag = False
         if self.testEtage(1, text):
             self.sentence = self.sentence + " a l'etage 1"
@@ -40,14 +41,17 @@ class textTraitment():
             self.sentence = text + " a tous les etage"
             self.order = prefix + " tout"
             flag = True
+            # si aucn etage a ete cite et qu'il y a un stop on doit arreter
         if not flag and "stop" in text:
             self.sentence = "arreter " + self.sentence
             self.order = "arreter " + prefix
 
     def textTreatment(self, text):
-        print("you just said : " + text)
-        if "floor" in text:
-            print("oh my god you said floor")
+        # initialisationd es attributs
+        self.order = ""
+        self.sentence = ""
+        # debut du traitement de texte. il fonctionne par mot cle. ainsi si on donne des ordres direct ou si on fait des phrases le programme comprendre
+        # ex : "help" et "I need some help" seront compris de la meme maniere
         if "help" in text:
             self.sentence = "demande d'aide detecte"
             self.order = "aide"
@@ -84,40 +88,10 @@ class textTraitment():
             if "acidity" in text:
                 self.sentence = "historique acidite"
                 self.floors(text, "historique acidite")
+        # affichage des valeurs deduites et on retourne l'ordre deduit.
         print("sentence :")
         print(self.sentence)
         print("order :")
         print(self.order)
-        if (self.order != ""):
-            self.mqtt.publish(self.order)
-        self.order = ""
-        self.sentence = ""
-
-
-
-            # aide
-            # accueil
-            # allumer tout
-            # allumer 1
-            # allumer 2
-            # allumer 3
-            # afficher 1
-            # afficher 2
-            # afficher 3
-            # arroser tout
-            # arroser 1
-            # arroser 2
-            # arroser 3
-            # arreter arrosage
-            # arreter eclairage
-            # historique humidite
-            # historique temperature
-            # historique acidite 1
-            # historique acidite 2
-            # historique acidite 3
-            # historique luminosite 1
-            # historique luminosite 2
-            # historique luminosite 3
-            # historique eau 1
-            # historique eau 2
-            # historique eau 3
+        # retourne l'ordre deduit
+        return self.order
