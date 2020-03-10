@@ -8,7 +8,7 @@ if __name__ == "__main__":
     mqtt = order()
     tt = textTraitment(mqtt)
     phrase = ""
-    while(phrase != "stop"):
+    while(1):
             phrase = stt.corpus()
             tt.textTreatment(phrase)
     mqtt.close()

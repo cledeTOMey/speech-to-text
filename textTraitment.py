@@ -57,11 +57,11 @@ class textTraitment():
         if "turn on light" in text or "turn on lights" in text:
             self.sentence = "allumage de la lumiere"
             self.floors(text, "allumer")
-        if "turn of light" in text or "turn of lights" in text:
+        if "turn off light" in text or "turn off lights" in text:
             self.sentence="arreter eclairage"
             self.order= "arreter eclairage"
         if "spray" in text:
-            self.sentence = "arrosage"
+            self.sentence = "arroser"
             self.floors(text, "arroser")
         if "display" in text:
             if "stat" in text:
@@ -78,9 +78,9 @@ class textTraitment():
             if "light" in text:
                 self.sentence = "historique luminosite"
                 self.floors(text, "historique luminosite")
-            if "spray" in text:
+            if "water" in text:
                 self.sentence = "historique eau"
-                self.floors(text, "historique arroser")
+                self.floors(text, "historique eau")
             if "acidity" in text:
                 self.sentence = "historique acidite"
                 self.floors(text, "historique acidite")
