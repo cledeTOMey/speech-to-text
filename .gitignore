@@ -1,4 +1,7 @@
-__pycache__/
+____pycache__/
 
 node_modules/
 
+*.pyc
+
+js/
